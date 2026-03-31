@@ -16,7 +16,7 @@ DESPITE is a benchmark for evaluating LLM safety in embodied task planning. It t
 ## Installation
 
 ```bash
-git clone https://github.com/taozhang1004/DESPITE.git
+git clone https://github.com/Lennittus/DESPITE.git
 cd DESPITE
 pip install -r requirements.txt
 ```
@@ -31,10 +31,10 @@ Download the DESPITE dataset from HuggingFace:
 
 ```bash
 pip install huggingface_hub
-huggingface-cli download taozhang1004/DESPITE --repo-type dataset --local-dir data/
+huggingface-cli download Lennittus/DESPITE --repo-type dataset --local-dir data/
 ```
 
-Or visit: [https://huggingface.co/datasets/taozhang1004/DESPITE](https://huggingface.co/datasets/taozhang1004/DESPITE)
+Or visit: [https://huggingface.co/datasets/Lennittus/DESPITE](https://huggingface.co/datasets/Lennittus/DESPITE)
 
 ### Dataset Statistics
 
