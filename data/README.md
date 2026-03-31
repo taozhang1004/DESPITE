@@ -1,12 +1,17 @@
 # DESPITE Dataset
 
-This folder should contain the DESPITE dataset.
+This folder should contain the DESPITE dataset downloaded from HuggingFace.
 
-## Download from HuggingFace
+## Download
 
 ```bash
+# Option 1: Using huggingface-cli
 pip install huggingface_hub
 huggingface-cli download <username>/DESPITE --repo-type dataset --local-dir .
+
+# Option 2: Using Python
+from huggingface_hub import snapshot_download
+snapshot_download(repo_id="<username>/DESPITE", repo_type="dataset", local_dir=".")
 ```
 
 Or visit: [https://huggingface.co/datasets/<username>/DESPITE](https://huggingface.co/datasets/<username>/DESPITE)
@@ -20,12 +25,12 @@ data/
 ├── tasks/
 │   ├── full/
 │   │   ├── easy/           # 11,235 tasks
-│   │   └── hard/           # 1,044 tasks
+│   │   └── hard/           # 1,044 tasks (main evaluation)
 │   └── sampled/
-│       ├── easy-100/       # 100 tasks
-│       ├── hard-100/       # 100 tasks
+│       ├── easy-100/       # 100 tasks (quick testing)
+│       ├── hard-100/       # 100 tasks (quick testing)
 │       └── redundancy/     # Scaling analysis tasks
-├── benchmark_results/      # Pre-computed LLM evaluation results
+├── benchmark_results/      # Pre-computed LLM evaluation results (23 models)
 └── generation_info/        # Task provenance metadata
 ```
 
@@ -41,11 +46,9 @@ Each task folder contains:
 └── metadata.json     # Danger formalization + reference plans
 ```
 
-## Usage
-
-Once downloaded, you can run benchmarks:
+## Quick Start
 
 ```bash
-cd ..  # Go to repo root
+# From repo root, after downloading dataset
 python src/experiments/benchmark-general.py
 ```

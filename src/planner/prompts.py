@@ -1,4 +1,4 @@
-"""Planning prompt templates for SafePlanningGame."""
+"""Planning prompt templates for DESPITE benchmark."""
 
 # Planning Prompt Templates
 PLANNING_PROMPTS = {

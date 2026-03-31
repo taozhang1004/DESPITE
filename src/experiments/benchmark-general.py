@@ -981,80 +981,47 @@ def dry_run_analysis(task_dirs: List[str], models: List[tuple], abilities_to_tes
 
 if __name__ == "__main__":
     # ============ CONFIG ============
-    # Toggle this to control behavior:
-    DRY_RUN = False           # Set to True to see what will be re-run without actually running
-    FORCE_RERUN = False      # Set to True to rerun all, False to skip existing
-    CLEANUP_FAILED = False   # Set to True to remove failed results before running
-    
-    # Test all abilities
+    # Toggle these flags to control behavior:
+    DRY_RUN = True            # Set to True to see what will be run without actually running
+    FORCE_RERUN = False       # Set to True to rerun all, False to skip existing
+    CLEANUP_FAILED = False    # Set to True to remove failed results before running
+
+    # Planning abilities to test
     abilities_to_test = [
         "comprehensive_planning",
         # "danger_identification",
         # "danger_condition_inference",
         # "safe_alternative_discovery"
     ]
-    
-    # Test with converted_bddl test tasks
+
+    # Dataset folders to benchmark (relative to project root)
+    # Download dataset from HuggingFace first - see data/README.md
     parent_folders = [
-        # === Redundancy experiments ===
-        # "data/sampled/redundancy/experiments",
-        # "data/sampled/redundancy/experiment_base",
-        # === Category/Length/Delta experiments ===
-        # "data/category",
-        # "data/plan_delta",
-        # "data/plan_length",
-        # === General Experiments ===
-        # "data/validation_data",
-        # "data/sampled/val-100",
-        # "data/full/hard",
-        # === hard/easy comparison experiments ===
-        "data/sampled/hard-100",
-        "data/sampled/easy-100",
+        "data/tasks/sampled/hard-100",    # Quick test (100 tasks)
+        "data/tasks/sampled/easy-100",    # Quick test (100 tasks)
+        # "data/tasks/full/hard",          # Full hard benchmark (1,044 tasks)
+        # "data/tasks/full/easy",          # Full easy benchmark (11,235 tasks)
     ]
 
+    # Models to evaluate: (provider, model_name)
+    # Providers: openai, anthropic, google, mistral, deepseek, together
     models = [
-        # # === General Experiments ===
-        # ("together", "Qwen/Qwen3-Next-80B-A3B-Instruct"),
-        # ("together", "Qwen/Qwen3-Next-80B-A3B-Thinking"),
-        # ("together", "Qwen/Qwen3-235B-A22B-Thinking-2507"),
-        # ("together", "Qwen/Qwen3-Coder-480B-A35B-Instruct-FP8"),
-        # ("together", "Qwen/Qwen3-235B-A22B-Instruct-2507-tput"),
-        # # ("together", "Qwen/QwQ-32B"),
+        # OpenAI
+        ("openai", "gpt-4o"),
+        # ("openai", "gpt-4o-mini"),
+
+        # Anthropic
+        # ("anthropic", "claude-3-5-sonnet-20241022"),
+
+        # Google
+        # ("google", "gemini-1.5-pro"),
+
+        # DeepSeek
+        # ("deepseek", "deepseek-chat"),
+
+        # Together AI (open-source models)
+        # ("together", "meta-llama/Llama-3.3-70B-Instruct-Turbo"),
         # ("together", "Qwen/Qwen2.5-72B-Instruct-Turbo"),
-        # ("together", "Qwen/Qwen2.5-7B-Instruct-Turbo"),
-        # # ("together", "Qwen/Qwen2.5-Coder-32B-Instruct"),
-        # # ("together", "openai/gpt-oss-20b"),
-        # # ("together", "openai/gpt-oss-120b"),
-        # ("together", "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8"),
-        # ("together", "meta-llama/Llama-3.3-70B-Instruct-Turbo"),
-        # ("together", "meta-llama/Llama-4-Scout-17B-16E-Instruct"),
-        # ("together", "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo"),
-        # ("together", "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo"),
-        # ("together", "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo"),
-        # ("together", "meta-llama/Llama-3.2-3B-Instruct-Turbo"),
-        # ("together", "meta-llama/Meta-Llama-3-70B-Instruct-Turbo"),
-        # ("together", "meta-llama/Meta-Llama-3-8B-Instruct-Lite"),
-        # ("deepseek", "deepseek-chat"),
-        # ("deepseek", "deepseek-reasoner"),
-        # ("openai", "gpt-5.1"),
-        # # ("openai", "gpt-5-mini"),
-        # # ("google", "gemini-2.5-flash-lite"),
-        # ("google", "gemini-2.5-pro"),
-        # ("google", "gemini-3-pro-preview"),
-        # # ("google", "gemini-2.5-flash"),
-        # ("anthropic", "claude-sonnet-4-5"),
-        # === Redundancy experiments ===
-        # ("deepseek", "deepseek-chat"),
-        # ("openai", "gpt-5.1"),
-        # ("openai", "gpt-5-mini"),
-        # ("anthropic", "claude-haiku-4-5"),
-        # ("together", "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo"),
-        # ("together", "meta-llama/Llama-3.3-70B-Instruct-Turbo"),
-        # ("together", "Qwen/Qwen3-235B-A22B-Instruct-2507-tput"),
-        # === hard/easy comparison experiments ===
-        ("together", "moonshotai/Kimi-K2-Instruct-0905"),
-        ("mistral", "mistral-large-2512"),
-        ("mistral", "ministral-14b-2512"),
     ]
     
     # Benchmark settings - test all tasks

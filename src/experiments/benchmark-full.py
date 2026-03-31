@@ -977,71 +977,51 @@ def dry_run_analysis(task_dirs: List[str], models: List[tuple], abilities_to_tes
 
 if __name__ == "__main__":
     # ============ CONFIG ============
-    # Toggle this to control behavior:
-    DRY_RUN = True           # Set to True to see what will be re-run without actually running
-    FORCE_RERUN = False      # Set to True to rerun all, False to skip existing
-    CLEANUP_FAILED = False   # Set to True to remove failed results before running
-    
-    # Test all abilities
+    # Toggle these flags to control behavior:
+    DRY_RUN = True            # Set to True to see what will be run without actually running
+    FORCE_RERUN = False       # Set to True to rerun all, False to skip existing
+    CLEANUP_FAILED = False    # Set to True to remove failed results before running
+
+    # Planning abilities to test
     abilities_to_test = [
         "comprehensive_planning",
         # "danger_identification",
         # "danger_condition_inference",
         # "safe_alternative_discovery"
     ]
-    
-    # Test with converted_bddl test tasks
+
+    # Dataset folders to benchmark (relative to project root)
+    # Download dataset from HuggingFace first - see data/README.md
     parent_folders = [
-        # === Redundancy experiments ===
-        # "data/sampled/redundancy/experiments",
-        # "data/sampled/redundancy/experiment_base",
-        # === Category/Length/Delta experiments ===
-        # "data/category",
-        # "data/plan_delta",
-        # "data/plan_length",
-        # === General Experiments ===
-        # "data/validation_data",
-        # "data/sampled/val-100",
-        # === Full Experiments ===
-        # "data/converted_alfred/validated_data",
-        # "data/converted_bddl/validated_data",
-        # "data/converted_neiss/validated_data",
-        # "data/converted_normbank/validated_data",
-        # "data/converted_virtualhome/validated_data",
-        "data/full/easy",
-        "data/full/hard",
+        "data/tasks/full/easy",           # Full easy benchmark (11,235 tasks)
+        "data/tasks/full/hard",           # Full hard benchmark (1,044 tasks)
     ]
 
+    # Models to evaluate: (provider, model_name)
+    # Providers: openai, anthropic, google, mistral, deepseek, together
     models = [
-        # === Redundancy experiments ===
+        # OpenAI
+        ("openai", "gpt-4o"),
+        # ("openai", "gpt-4o-mini"),
+
+        # Anthropic
+        # ("anthropic", "claude-3-5-sonnet-20241022"),
+
+        # Google
+        # ("google", "gemini-1.5-pro"),
+
+        # DeepSeek
         # ("deepseek", "deepseek-chat"),
-        # ("openai", "gpt-5"),
-        # ("openai", "gpt-5-mini"),
-        # ("together", "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo"),
+
+        # Together AI (open-source models)
         # ("together", "meta-llama/Llama-3.3-70B-Instruct-Turbo"),
-        # ("together", "Qwen/Qwen3-235B-A22B-Instruct-2507-tput"),
-        # ("anthropic", "claude-sonnet-4-5"),
-        # === Category/Length/Delta experiments ===
-        # ("deepseek", "deepseek-chat"),
-        # ("openai", "gpt-5-mini"),
-        # ("together", "meta-llama/Llama-3.3-70B-Instruct-Turbo"),
-        # ("together", "Qwen/Qwen3-235B-A22B-Instruct-2507-tput"),
-        # === Full Experiments ===
-        # ("openai", "gpt-5-nano"),
-        # ("deepseek", "deepseek-chat"),
-        # ("together", "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8"),
-        # ("google", "gemini-2.5-flash-lite"),
-        # ("google", "gemini-2.5-pro"),
-        # ("google", "gemini-2.5-flash"),
-        # ("mistral", "mistral-medium-latest"),
-        # ("openai", "gpt-5-mini"),
-        # ("anthropic", "claude-haiku-4-5"),
+        # ("together", "Qwen/Qwen2.5-72B-Instruct-Turbo"),
     ]
-    
-    # Benchmark settings - test all tasks
-    MAX_TASKS = None      # Test all tasks
-    MAX_CONCURRENT = 64   # Number of parallel runs
-    RUN_IDS = [1]         # Run IDs for variance analysis (list of run IDs to benchmark)
+
+    # Benchmark settings
+    MAX_TASKS = None      # Test all tasks (set to int for subset)
+    MAX_CONCURRENT = 8    # Number of parallel API calls
+    RUN_IDS = [1]         # Run IDs for variance analysis
     # ===============================
     
     # Find all tasks in these folders

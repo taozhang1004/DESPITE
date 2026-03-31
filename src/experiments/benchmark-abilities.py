@@ -1022,86 +1022,46 @@ def dry_run_analysis(task_dirs: List[str], models: List[tuple], abilities_to_tes
 
 if __name__ == "__main__":
     # ============ CONFIG ============
-    # Toggle this to control behavior:
-    DRY_RUN = False           # Set to True to see what will be re-run without actually running
-    FORCE_RERUN = False      # Set to True to rerun all, False to skip existing
-    CLEANUP_FAILED = False   # Set to True to remove failed results before running
-    
-    # Test all abilities
+    # Toggle these flags to control behavior:
+    DRY_RUN = True            # Set to True to see what will be run without actually running
+    FORCE_RERUN = False       # Set to True to rerun all, False to skip existing
+    CLEANUP_FAILED = False    # Set to True to remove failed results before running
+
+    # Test all four planning abilities
     abilities_to_test = [
         "comprehensive_planning",
         "danger_identification",
         "danger_condition_inference",
         "safe_alternative_discovery"
     ]
-    
-    # Test with converted_bddl test tasks
+
+    # Dataset folders to benchmark (relative to project root)
+    # Download dataset from HuggingFace first - see data/README.md
     parent_folders = [
-        # === Redundancy experiments ===
-        # "data/sampled/redundancy/experiments",
-        # "data/sampled/redundancy/experiment_base",
-        # === Category/Length/Delta experiments ===
-        # "data/category",
-        # "data/plan_delta",
-        # "data/plan_length",
-        # === General Experiments ===
-        # "data/validation_data",
-        "data/sampled/val-100",
+        "data/tasks/sampled/hard-100",    # Quick test (100 tasks)
+        # "data/tasks/full/hard",          # Full hard benchmark (1,044 tasks)
     ]
 
+    # Models to evaluate: (provider, model_name)
+    # Providers: openai, anthropic, google, mistral, deepseek, together
     models = [
-        # === Redundancy experiments ===
+        # OpenAI
+        ("openai", "gpt-4o"),
+
+        # Anthropic
+        # ("anthropic", "claude-3-5-sonnet-20241022"),
+
+        # DeepSeek
         # ("deepseek", "deepseek-chat"),
-        # ("openai", "gpt-5"),
-        # ("openai", "gpt-5-mini"),
-        # ("together", "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo"),
+
+        # Together AI (open-source models)
         # ("together", "meta-llama/Llama-3.3-70B-Instruct-Turbo"),
-        # ("together", "Qwen/Qwen3-235B-A22B-Instruct-2507-tput"),
-        # ("anthropic", "claude-sonnet-4-5"),
-        # === Category/Length/Delta experiments ===
-        # ("deepseek", "deepseek-chat"),
-        # ("openai", "gpt-5-mini"),
-        # ("together", "meta-llama/Llama-3.3-70B-Instruct-Turbo"),
-        # ("together", "Qwen/Qwen3-235B-A22B-Instruct-2507-tput"),
-        # === General Experiments ===
-        # ("deepseek", "deepseek-chat"),
-        # ("deepseek", "deepseek-reasoner"),
-        # ("openai", "gpt-5"),
-        # ("openai", "gpt-5-mini"),
-        # ("together", "Qwen/Qwen3-Next-80B-A3B-Instruct"),
-        # ("together", "Qwen/Qwen3-Next-80B-A3B-Thinking"),
-        # ("together", "Qwen/Qwen3-235B-A22B-Thinking-2507"),
-        # ("together", "Qwen/Qwen3-Coder-480B-A35B-Instruct-FP8"),
-        # ("together", "Qwen/Qwen3-235B-A22B-Instruct-2507-tput"),
-        # ("together", "Qwen/QwQ-32B"),
-        # ("together", "Qwen/Qwen2.5-72B-Instruct-Turbo"),
-        # ("together", "Qwen/Qwen2.5-7B-Instruct-Turbo"),
-        # ("together", "Qwen/Qwen2.5-Coder-32B-Instruct"),
-        # ("together", "openai/gpt-oss-20b"),
-        # ("together", "openai/gpt-oss-120b"),
-        # ("together", "meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8"),
-        # ("together", "meta-llama/Llama-3.3-70B-Instruct-Turbo"),
-        # ("together", "meta-llama/Llama-4-Scout-17B-16E-Instruct"),
-        # ("together", "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo"),
-        # ("together", "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo"),
-        # ("together", "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo"),
-        # ("together", "meta-llama/Llama-3.2-3B-Instruct-Turbo"),
-        # ("together", "meta-llama/Meta-Llama-3-70B-Instruct-Turbo"),
-        # ("together", "meta-llama/Meta-Llama-3-8B-Instruct-Lite"),
-        # === Abilities experiments ===
-        ("deepseek", "deepseek-chat"),
-        ("openai", "gpt-5-mini"),
-        ("together", "meta-llama/Llama-3.3-70B-Instruct-Turbo"),
-        ("together", "Qwen/Qwen3-235B-A22B-Instruct-2507-tput"),
-        ("anthropic", "claude-haiku-4-5"),
-        ("openai", "gpt-5.1"),
-        ("deepseek", "deepseek-reasoner"),
     ]
-    
-    # Benchmark settings - test all tasks
-    MAX_TASKS = None      # Test all tasks
-    MAX_CONCURRENT = 64   # Number of parallel runs
-    RUN_IDS = [1]         # Run IDs for variance analysis (list of run IDs to benchmark)
+
+    # Benchmark settings
+    MAX_TASKS = None      # Test all tasks (set to int for subset)
+    MAX_CONCURRENT = 8    # Number of parallel API calls
+    RUN_IDS = [1]         # Run IDs for variance analysis
     # ===============================
     
     # Find all tasks in these folders
