@@ -7,14 +7,14 @@ This folder should contain the DESPITE dataset downloaded from HuggingFace.
 ```bash
 # Option 1: Using huggingface-cli
 pip install huggingface_hub
-huggingface-cli download <username>/DESPITE --repo-type dataset --local-dir .
+huggingface-cli download taozhang1004/DESPITE --repo-type dataset --local-dir .
 
 # Option 2: Using Python
 from huggingface_hub import snapshot_download
-snapshot_download(repo_id="<username>/DESPITE", repo_type="dataset", local_dir=".")
+snapshot_download(repo_id="taozhang1004/DESPITE", repo_type="dataset", local_dir=".")
 ```
 
-Or visit: [https://huggingface.co/datasets/<username>/DESPITE](https://huggingface.co/datasets/<username>/DESPITE)
+Or visit: [https://huggingface.co/datasets/taozhang1004/DESPITE](https://huggingface.co/datasets/taozhang1004/DESPITE)
 
 ## Expected Structure
 
