@@ -1,0 +1,27 @@
+# Core Planning Framework
+unified-planning>=1.2.0
+
+# Unified Planning Engines (install what you need)
+up-enhsp>=0.0.27          # Numeric planning (requires Java 17+)
+up-fast-downward>=0.5.0   # Classical planning
+up-pyperplan>=1.1.0       # Simple classical planning
+
+# LLM Providers (install what you need)
+openai>=1.0.0             # OpenAI API (also used for DeepSeek)
+anthropic>=0.50.0         # Anthropic Claude API
+google-generativeai>=0.8.0  # Google Gemini API
+mistralai>=1.0.0          # Mistral AI API
+together>=1.0.0           # Together AI API
+
+# Data Processing & Visualization
+pandas>=2.0.0
+numpy>=1.26.0
+matplotlib>=3.7.0
+seaborn>=0.13.0
+plotly>=5.0.0             # Interactive plots & Sankey diagrams
+kaleido>=0.2.0            # Plotly static image export
+adjustText>=1.0.0         # Text label positioning
+
+# Utilities
+tqdm>=4.60.0
+python-dotenv>=1.0.0
