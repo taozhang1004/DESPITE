@@ -229,7 +229,9 @@ async def main():
     source_files = {
         "normbank": "NormBank.csv",
         "neiss": "neiss2024.csv",
-        "bddl": "bddl"  # BDDL uses directory structure
+        "bddl": "bddl",
+        "virtualhome": "virtualhome",
+        "alfred": "alfred"
     }
     
     if DATASET_NAME not in source_files:

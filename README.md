@@ -83,7 +83,7 @@ DESPITE/
 │   │   ├── benchmark-general.py
 │   │   ├── benchmark-abilities.py
 │   │   └── analysis/      # Visualization scripts
-│   ├── data_converter/    # Data pipeline tools
+│   ├── data_generator/    # Data pipeline tools
 │   └── utils/             # Utilities
 ├── data/                  # Dataset (download from HuggingFace)
 └── requirements.txt
