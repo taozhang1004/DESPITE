@@ -387,42 +387,89 @@ def get_short_model_name(model_key: str) -> str:
     return model_name
 
 
-def load_bootstrap_cis(ci_file_path: str = None) -> Dict[str, Dict[str, float]]:
+def compute_bootstrap_cis(data: Dict[str, Any], n_boot: int = 10000, seed: int = 42) -> Dict[str, Dict[str, float]]:
     """
-    Load bootstrap confidence intervals from Q02 results file.
-    Parses the CSV section at the bottom of the results file.
+    Compute bootstrap 95% confidence intervals for F, S, SI, SP metrics.
+
+    Args:
+        data: Raw benchmark data from collect_data()
+        n_boot: Number of bootstrap iterations (default 10,000)
+        seed: Random seed for reproducibility (default 42)
 
     Returns:
         Dictionary mapping short model name to CI dict with keys:
         F, F_lo, F_hi, S, S_lo, S_hi, SI, SI_lo, SI_hi, SP, SP_lo, SP_hi
         (all values in percentage)
     """
-    if ci_file_path is None:
-        ci_file_path = "data/experiments/revision_checklist/Q02_bootstrap_CIs/results_bootstrap_cis.txt"
+    # Collect per-task binary arrays for each model
+    model_task_data = {}  # model_key -> list of (is_feasible, is_safe, has_si)
 
-    ci_path = Path(ci_file_path)
-    if not ci_path.exists():
-        return {}
-
-    cis = {}
-    in_csv = False
-
-    with open(ci_path) as f:
-        for line in f:
-            line = line.strip()
-            if line.startswith('Model,N,F,'):
-                in_csv = True
+    for task_id, task_data in data.items():
+        if 'models' not in task_data:
+            continue
+        for model_key, model_data in task_data['models'].items():
+            task_types = model_data.get('task_types', {})
+            if 'comprehensive_planning' not in task_types:
                 continue
-            if in_csv and line:
-                parts = line.split(',')
-                if len(parts) >= 14:
-                    model_name = parts[0]
-                    cis[model_name] = {
-                        'F': float(parts[2]), 'F_lo': float(parts[3]), 'F_hi': float(parts[4]),
-                        'S': float(parts[5]), 'S_lo': float(parts[6]), 'S_hi': float(parts[7]),
-                        'SI': float(parts[8]), 'SI_lo': float(parts[9]), 'SI_hi': float(parts[10]),
-                        'SP': float(parts[11]), 'SP_lo': float(parts[12]), 'SP_hi': float(parts[13]),
-                    }
+
+            val = task_types['comprehensive_planning']['validation_result']
+            score = val.get('score', 0)
+            has_si = val.get('safety_intention', False)
+
+            is_feasible = 1 if score >= 1 else 0
+            is_safe = 1 if score == 2 else 0
+            has_si_int = 1 if has_si else 0
+
+            if model_key not in model_task_data:
+                model_task_data[model_key] = []
+            model_task_data[model_key].append((is_feasible, is_safe, has_si_int))
+
+    # Bootstrap for each model
+    rng = np.random.RandomState(seed)
+    cis = {}
+
+    for model_key, task_list in model_task_data.items():
+        n_tasks = len(task_list)
+        if n_tasks == 0:
+            continue
+
+        arr = np.array(task_list)  # shape: (n_tasks, 3) - columns: feasible, safe, si
+
+        # Bootstrap arrays for F, S, SI, SP
+        F_boots = np.zeros(n_boot)
+        S_boots = np.zeros(n_boot)
+        SI_boots = np.zeros(n_boot)
+        SP_boots = np.zeros(n_boot)
+
+        for i in range(n_boot):
+            idx = rng.choice(n_tasks, n_tasks, replace=True)
+            sample = arr[idx]
+
+            f_count = sample[:, 0].sum()
+            s_count = sample[:, 1].sum()
+            si_count = sample[:, 2].sum()
+
+            F_boots[i] = f_count / n_tasks * 100
+            S_boots[i] = s_count / n_tasks * 100
+            SI_boots[i] = si_count / n_tasks * 100
+            SP_boots[i] = (s_count / f_count * 100) if f_count > 0 else 0.0
+
+        # Compute point estimates and percentile CIs
+        short_name = get_short_model_name(model_key)
+        cis[short_name] = {
+            'F': arr[:, 0].mean() * 100,
+            'F_lo': np.percentile(F_boots, 2.5),
+            'F_hi': np.percentile(F_boots, 97.5),
+            'S': arr[:, 1].mean() * 100,
+            'S_lo': np.percentile(S_boots, 2.5),
+            'S_hi': np.percentile(S_boots, 97.5),
+            'SI': arr[:, 2].mean() * 100,
+            'SI_lo': np.percentile(SI_boots, 2.5),
+            'SI_hi': np.percentile(SI_boots, 97.5),
+            'SP': (arr[:, 1].sum() / arr[:, 0].sum() * 100) if arr[:, 0].sum() > 0 else 0.0,
+            'SP_lo': np.percentile(SP_boots, 2.5),
+            'SP_hi': np.percentile(SP_boots, 97.5),
+        }
 
     return cis
 
@@ -1655,8 +1702,8 @@ def main(selected_models: Optional[List[str]] = None,
     output_dir = Path("data/experiments/general_analysis")
     output_dir.mkdir(parents=True, exist_ok=True)
     
-    print("\n🔄 Loading bootstrap CIs...")
-    bootstrap_cis = load_bootstrap_cis()
+    print("\n🔄 Computing bootstrap CIs (10,000 iterations, seed=42)...")
+    bootstrap_cis = compute_bootstrap_cis(data)
 
     print("\n🔄 Creating comprehensive table...")
     table_output_path = output_dir / "results_main.txt"
