@@ -1,0 +1,85 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "despite"
+version = "1.0.0"
+description = "DESPITE: Deterministic Evaluation of Safe Planning In embodied Task Execution"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+authors = [
+    {name = "Tao Zhang"},
+    {name = "Kaixian Qu"},
+    {name = "Zhibin Li"},
+    {name = "Jiajun Wu"},
+    {name = "Marco Hutter"},
+    {name = "Manling Li"},
+    {name = "Fan Shi"},
+]
+keywords = ["llm", "safety", "task-planning", "robotics", "embodied-ai"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    # Core Planning Framework
+    "unified-planning>=1.2.0",
+    "setuptools<70",  # Required for pkg_resources (used by up-enhsp)
+
+    # LLM Providers
+    "openai>=1.0.0",
+    "anthropic>=0.50.0",
+    "google-genai>=1.0.0",
+    "mistralai>=1.0.0,<2.0.0",
+    "together>=1.0.0",
+
+    # Data Processing & Visualization
+    "pandas>=2.0.0",
+    "numpy>=1.26.0",
+    "matplotlib>=3.7.0",
+    "seaborn>=0.13.0",
+    "plotly>=5.0.0",
+    "kaleido>=0.2.0",
+    "adjustText>=1.0.0",
+
+    # Utilities
+    "tqdm>=4.60.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+# Planning engines (install based on your platform)
+planning = [
+    "up-enhsp>=0.0.27",
+    "up-fast-downward>=0.5.0",
+    "up-pyperplan>=1.1.0",
+]
+
+dev = [
+    "pytest>=7.0.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Lennittus/DESPITE"
+Documentation = "https://github.com/Lennittus/DESPITE#readme"
+Repository = "https://github.com/Lennittus/DESPITE"
+Issues = "https://github.com/Lennittus/DESPITE/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.pddl", "*.json"]

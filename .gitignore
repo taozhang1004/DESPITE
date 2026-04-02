@@ -31,10 +31,7 @@ ENV/
 .env.local
 
 # Data (downloaded from HuggingFace)
-data/tasks/
-data/benchmark_results/
-data/generation_info/
-!data/README.md
+data/
 
 # IDE
 .idea/
