@@ -1,11 +1,12 @@
-# DESPITE
-***D**eterministic **E**valuation of **S**afe **P**lanning **I**n embodied **T**ask **E**xecution*
+# DESPITE: Deterministic Evaluation of Safe Planning In embodied Task Execution
 
-This repository contains the official implementation for:
+[![Project Page](https://img.shields.io/badge/Project-Page-blue)](https://taozhang1004.github.io/DESPITE-safety/)
+[![Dataset](https://img.shields.io/badge/HuggingFace-Dataset-yellow?logo=huggingface)](https://huggingface.co/datasets/lennittus/DESPITE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-> **Using large language models for embodied planning introduces systematic safety risks**
->
-> Tao Zhang, Kaixian Qu, Zhibin Li, Jiajun Wu, Marco Hutter, Manling Li, Fan Shi
+Official implementation for **"Using large language models for embodied planning introduces systematic safety risks"**
+
+**Authors:** Tao Zhang, Kaixian Qu, Zhibin Li, Jiajun Wu, Marco Hutter, Manling Li, Fan Shi
 
 DESPITE is a benchmark framework for evaluating task planning safety, with deterministic validation and scalable task generation.
 
@@ -14,7 +15,7 @@ DESPITE is a benchmark framework for evaluating task planning safety, with deter
 ### Installation
 
 ```bash
-git clone https://github.com/Lennittus/DESPITE.git
+git clone https://github.com/taozhang1004/DESPITE.git
 cd DESPITE
 conda create -n despite python=3.10 && conda activate despite
 pip install -e ".[planning]"
