@@ -62,11 +62,7 @@ See `[src/data_generator/README.md](src/data_generator/README.md)` for task gene
 ## Citation
 
 ```bibtex
-@article{zhang2025despite,
-  title={Using large language models for embodied planning introduces systematic safety risks},
-  author={Zhang, Tao and Qu, Kaixian and Li, Zhibin and Wu, Jiajun and Hutter, Marco and Li, Manling and Shi, Fan},
-  year={2025}
-}
+coming soon
 ```
 
 ## License
