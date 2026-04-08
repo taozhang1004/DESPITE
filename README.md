@@ -1,6 +1,6 @@
 # DESPITE: Deterministic Evaluation of Safe Planning In embodied Task Execution
 
-[![Project Page](https://img.shields.io/badge/Project-Page-blue)](https://taozhang1004.github.io/DESPITE-safety/)
+[![Project Page](https://img.shields.io/badge/Project-Page-blue)](https://despite-safety.github.io/)
 [![Dataset](https://img.shields.io/badge/HuggingFace-Dataset-yellow?logo=huggingface)](https://huggingface.co/datasets/lennittus/DESPITE)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
