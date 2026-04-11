@@ -8,7 +8,7 @@ Official implementation for **"Using large language models for embodied planning
 
 **Authors:** Tao Zhang, Kaixian Qu, Zhibin Li, Jiajun Wu, Marco Hutter, Manling Li, Fan Shi
 
-DESPITE is a benchmark framework for evaluating task planning safety, with deterministic validation and scalable task generation.
+DESPITE is a benchmark framework for evaluating task planning safety, with deterministic validation and scalable task data generation.
 
 ## Getting Started
 
