@@ -72,10 +72,10 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/Lennittus/DESPITE"
-Documentation = "https://github.com/Lennittus/DESPITE#readme"
-Repository = "https://github.com/Lennittus/DESPITE"
-Issues = "https://github.com/Lennittus/DESPITE/issues"
+Homepage = "https://github.com/taozhang1004/DESPITE"
+Documentation = "https://github.com/taozhang1004/DESPITE#readme"
+Repository = "https://github.com/taozhang1004/DESPITE"
+Issues = "https://github.com/taozhang1004/DESPITE/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]

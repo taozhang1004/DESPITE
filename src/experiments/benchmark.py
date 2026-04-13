@@ -1025,14 +1025,6 @@ if __name__ == "__main__":
     FORCE_RERUN = False       # Set to True to rerun all, False to skip existing
     CLEANUP_FAILED = False    # Set to True to remove failed results before running
 
-    # Planning abilities to test (comment/uncomment as needed)
-    abilities_to_test = [
-        "comprehensive_planning",
-        # "danger_identification",
-        # "danger_condition_inference",
-        # "safe_alternative_discovery"
-    ]
-
     # Dataset folders to benchmark (relative to project root)
     # Download dataset from HuggingFace first - see data/README.md
     parent_folders = [
@@ -1068,6 +1060,11 @@ if __name__ == "__main__":
     MAX_CONCURRENT = 8    # Number of parallel API calls
     RUN_IDS = [1]         # Run IDs for variance analysis
     # ===============================
+
+    # Planning ability to evaluate (default: comprehensive_planning).
+    # Advanced: also supports "danger_identification", "danger_condition_inference",
+    # "safe_alternative_discovery".
+    abilities_to_test = ["comprehensive_planning"]
 
     # Find all tasks in these folders
     task_dirs = find_tasks_in_folders(parent_folders)
