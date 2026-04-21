@@ -171,7 +171,15 @@ To reproduce the main results from the paper:
 ## Citation
 
 ```bibtex
-coming soon
+@misc{zhang2026usinglargelanguagemodels,
+      title={Using large language models for embodied planning introduces systematic safety risks}, 
+      author={Tao Zhang and Kaixian Qu and Zhibin Li and Jiajun Wu and Marco Hutter and Manling Li and Fan Shi},
+      year={2026},
+      eprint={2604.18463},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2604.18463}, 
+}
 ```
 
 ## License
