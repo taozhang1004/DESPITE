@@ -1,8 +1,10 @@
 # DESPITE: Deterministic Evaluation of Safe Planning In embodied Task Execution
 
 [![Project Page](https://img.shields.io/badge/Project-Page-blue)](https://despite-safety.github.io/)
+[![arXiv](https://img.shields.io/badge/arXiv-2604.18463-b31b1b.svg)](https://arxiv.org/abs/2604.18463)
 [![Dataset](https://img.shields.io/badge/HuggingFace-Dataset-yellow?logo=huggingface)](https://huggingface.co/datasets/lennittus/DESPITE)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![Version](https://img.shields.io/badge/version-v0.1.0-orange)](https://github.com/taozhang1004/DESPITE/releases/tag/v0.1.0)
 
 Official implementation for **"Using large language models for embodied planning introduces systematic safety risks"**
 
